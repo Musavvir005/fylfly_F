@@ -10,6 +10,7 @@ function UploadPanel() {
   const [uploadStatus, setUploadStatus] = useState(null); // null | 'uploading' | 'error'
   const [expiryTime, setExpiryTime] = useState(null);
   const [showToast, setShowToast] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState('');
   const fileInputRef = useRef();
 
   // ── Helpers ─────────────────────────────────────────────
@@ -51,6 +52,7 @@ function UploadPanel() {
     setShowToast(false);
     setRecipient('');
     setMessage('');
+    setGeneratedCode('');
   };
 
   // ── Upload Handler ───────────────────────────────────────
@@ -74,6 +76,7 @@ function UploadPanel() {
       const response = await axios.post('http://localhost:5000/api/upload', formData);
 
       // Show toast first, then reset only the form fields
+      setGeneratedCode(response.data.code);
       setExpiryTime(response.data.expiryTime);
       setShowToast(true);
       setSelectedFile(null);
@@ -110,7 +113,7 @@ function UploadPanel() {
           {!selectedFile ? (
             <div className="drop-content">
               <div className="drop-icon">
-                <img src={require('../upload-logo.png')} alt="Upload" style={{ width: '220px', height: '220px', objectFit: 'contain' }} />
+                <img src={require('../upload-logo.png')} alt="Upload" className="upload-logo-img" />
               </div>
               <p className="drop-text">Drop your file here</p>
               <p className="drop-hint">or <span className="link-text">click to browse</span></p>
@@ -165,6 +168,7 @@ function UploadPanel() {
       {/* ── Expiry Toast ── */}
       {showToast && expiryTime && (
         <ExpiryToast
+          code={generatedCode}
           expiryTime={expiryTime}
           onDismiss={() => { setShowToast(false); }}
         />

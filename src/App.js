@@ -45,16 +45,28 @@ function App() {
       {/* Main content */}
       <main className="main-content">
         <header className="topbar">
-          <div className="topbar-title">
-            {navItems.find((n) => n.id === activePanel)?.label}
+          <div className="topbar-left">
+            <div className="mobile-brand">
+              <div className="brand-icon-sm">FYL</div>
+              <span className="brand-name-sm">FLY</span>
+            </div>
+            <div className="topbar-title">
+              {navItems.find((n) => n.id === activePanel)?.label}
+            </div>
           </div>
           <div className="topbar-meta">Secure · Fast · Private</div>
         </header>
 
         <div className="panel-area">
-          {activePanel === 'upload' && <UploadPanel />}
-          {activePanel === 'retrieve' && <RetrievePanel />}
-          {activePanel === 'about' && <AboutPanel />}
+          <div className={`panel-slide ${activePanel === 'upload' ? 'active' : ''}`}>
+            <UploadPanel />
+          </div>
+          <div className={`panel-slide ${activePanel === 'retrieve' ? 'active' : ''}`}>
+            <RetrievePanel />
+          </div>
+          <div className={`panel-slide ${activePanel === 'about' ? 'active' : ''}`}>
+            <AboutPanel />
+          </div>
         </div>
       </main>
     </div>
