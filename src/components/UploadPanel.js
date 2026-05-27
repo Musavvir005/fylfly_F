@@ -73,7 +73,7 @@ function UploadPanel() {
     if (message.trim()) formData.append('message', message.trim());
 
     try {
-      const response = await axios.post('http://localhost:5000/api/upload', formData);
+      const response = await axios.post('https://fylfly-backend-2.onrender.com', formData);
 
       // Show toast first, then reset only the form fields
       setGeneratedCode(response.data.code);
