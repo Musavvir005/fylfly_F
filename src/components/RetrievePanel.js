@@ -26,7 +26,7 @@ function RetrievePanel() {
     setFoundFile(null);
 
     try {
-      const response = await axios.post('https://fylfly-backend-3.onrender.com/api/retrieve', {
+      const response = await axios.post('https://fylfly-backend.onrender.com/api/retrieve', {
         code: code.trim()
       });
 
