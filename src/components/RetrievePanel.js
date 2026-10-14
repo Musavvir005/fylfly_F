@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../api';
 
 function RetrievePanel() {
   const [code, setCode] = useState('');
@@ -26,7 +27,7 @@ function RetrievePanel() {
     setFoundFile(null);
 
     try {
-      const response = await axios.post('https://fylfly-backend.onrender.com/api/retrieve', {
+      const response = await axios.post(`${API_BASE_URL}/api/retrieve`, {
         code: code.trim()
       });
 

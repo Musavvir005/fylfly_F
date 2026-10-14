@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import ExpiryToast from './ExpiryToast';
+import { API_BASE_URL } from '../api';
 
 function UploadPanel() {
   const [dragging, setDragging] = useState(false);
@@ -9,8 +10,8 @@ function UploadPanel() {
   const [message, setMessage] = useState('');
   const [uploadStatus, setUploadStatus] = useState(null); // null | 'uploading' | 'error'
   const [expiryTime, setExpiryTime] = useState(null);
+  const [sentToEmail, setSentToEmail] = useState('');
   const [showToast, setShowToast] = useState(false);
-  const [generatedCode, setGeneratedCode] = useState('');
   const fileInputRef = useRef();
 
   // ── Helpers ─────────────────────────────────────────────
@@ -52,7 +53,6 @@ function UploadPanel() {
     setShowToast(false);
     setRecipient('');
     setMessage('');
-    setGeneratedCode('');
   };
 
   // ── Upload Handler ───────────────────────────────────────
@@ -73,10 +73,10 @@ function UploadPanel() {
     if (message.trim()) formData.append('message', message.trim());
 
     try {
-      const response = await axios.post('https://fylfly-backend.onrender.com/api/upload', formData);
+      const response = await axios.post(`${API_BASE_URL}/api/upload`, formData);
 
       // Show toast first, then reset only the form fields
-      setGeneratedCode(response.data.code);
+      setSentToEmail(recipient.trim());
       setExpiryTime(response.data.expiryTime);
       setShowToast(true);
       setSelectedFile(null);
@@ -168,8 +168,8 @@ function UploadPanel() {
       {/* ── Expiry Toast ── */}
       {showToast && expiryTime && (
         <ExpiryToast
-          code={generatedCode}
           expiryTime={expiryTime}
+          sentToEmail={sentToEmail}
           onDismiss={() => { setShowToast(false); }}
         />
       )}

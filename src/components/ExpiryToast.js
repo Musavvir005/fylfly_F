@@ -8,7 +8,7 @@ const DURATION_MS = 10000; // 10 seconds total display time
  *   expiryTime  — ISO string from backend (e.g. "2026-04-11T12:30:00.000Z")
  *   onDismiss   — callback fired when toast hides (auto or manual)
  */
-function ExpiryToast({ code, expiryTime, onDismiss }) {
+function ExpiryToast({ expiryTime, sentToEmail, onDismiss }) {
   const [progress, setProgress] = useState(100); // 100 → 0
   const [fading, setFading] = useState(false);
   const startTime = useRef(Date.now());
@@ -52,16 +52,12 @@ function ExpiryToast({ code, expiryTime, onDismiss }) {
     <div className={`et-wrap ${fading ? 'et-wrap--fading' : ''}`} role="status">
       {/* Header row */}
       <div className="et-header">
-        <span className="et-icon">⌛</span>
+        <span className="et-icon">✉️</span>
         <div className="et-text">
-          <p className="et-title">File Shared!</p>
-          {code && (
-            <p className="et-code-info" style={{ margin: '4px 0', fontSize: '13.5px', color: '#eae6df' }}>
-              Code: <strong style={{ color: '#88b693', fontFamily: 'monospace', letterSpacing: '0.5px' }}>FYL-{code}</strong>
-            </p>
-          )}
+          <p className="et-title">Code Sent via Email!</p>
           <p className="et-sub">
-            Available till <strong className="et-time">{availableTill}</strong>
+            {sentToEmail ? <>Emailed to <strong>{sentToEmail}</strong> • </> : null}
+            Valid till <strong className="et-time">{availableTill}</strong>
           </p>
         </div>
         <button className="et-close" onClick={() => { setFading(true); setTimeout(() => onDismiss?.(), 400); }} aria-label="Dismiss">
